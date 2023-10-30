@@ -2,8 +2,9 @@ import game
 import menu_diff
 from PPlay.window import *
 from PPlay.sprite import *
+from PPlay.gameimage import *
 
-# INICIA RECURSOS
+# Start resources
 menuwindow = Window(800, 600)
 menuwindow.set_title("Space Invaders")
 
@@ -11,41 +12,42 @@ mouse = menuwindow.get_mouse()
 
 dificuldade = 1
 
-# INICIA OPÇOES MENU
+# Start menu
 
-play = Sprite("menu/play.png")
-diff = Sprite("menu/diff.png")
-ranking = Sprite("menu/rank.png")
-sair = Sprite("menu/exit.png")
+play = Sprite("menu/start.png")
+diff = Sprite("menu/dificuldade.png")
+ranking = Sprite("menu/ranking.png")
+sair = Sprite("menu/sair.png")
+fundo = GameImage("menu/fundo.png")
 
-play.x = 50
-play.y = 20
+sair.x = menuwindow.width/2 - sair.width/2
+sair.y = menuwindow.height - sair.height - 50
 
-diff.x = 50
-diff.y = play.y + diff.height + 20
+ranking.x = menuwindow.width/2 - ranking.width/2
+ranking.y = sair.y - ranking.height - 25
 
-ranking.x = 50
-ranking.y = diff.y + ranking.height + 20
+diff.x = menuwindow.width/2 - diff.width/2
+diff.y = ranking.y - diff.height - 25
 
-sair.x = 50
-sair.y = ranking.y + sair.height + 20
+play.x = menuwindow.width/2 - play.width/2
+play.y = diff.y - play.height - 25
 
-# GAMELOOP
+# Loop
 while True:
 
     if mouse.is_over_area([diff.x, diff.y], [diff.x + diff.width, diff.y + diff.height]) and mouse.is_button_pressed(1):
         dificuldade = menu_diff.setdificuldade()
 
-    if mouse.is_over_area([play.x, play.y], [play.x + play.width, play.y + play.height]) and mouse.is_button_pressed(1):
-        game.startgame()
+    elif mouse.is_over_area([play.x, play.y], [play.x + play.width, play.y + play.height]) and mouse.is_button_pressed(1):
+        game.startgame(dificuldade)
 
-    if mouse.is_over_area([sair.x, sair.y], [sair.x + sair.width, sair.y + sair.height]) and mouse.is_button_pressed(1):
+    elif mouse.is_over_area([sair.x, sair.y], [sair.x + sair.width, sair.y + sair.height]) and mouse.is_button_pressed(1):
         break
 
-    menuwindow.set_background_color([255, 255, 255])
+    fundo.draw()
     play.draw()
     diff.draw()
     ranking.draw()
     sair.draw()
-    menuwindow.draw_text("%.1f" % dificuldade, 400, 50, 24, [0, 0, 0], "Arial", False, False)
+    menuwindow.draw_text("%.1f" % dificuldade, menuwindow.width - 100, menuwindow.height - 100, 24, [0, 0, 0], "Arial", False, False)
     menuwindow.update()

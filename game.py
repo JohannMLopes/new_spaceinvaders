@@ -2,15 +2,16 @@ from PPlay.window import *
 from PPlay.sprite import *
 
 
-def startgame():
+def startgame(dificuldade):
 
     # Start resources
     gamewindow = Window(800, 600)
     gamewindow.set_background_color([0, 0, 0])
+    gamewindow.set_title("Space Invaders")
 
     teclado = gamewindow.get_keyboard()
 
-    tiro_counter = 0 # Contador tiro
+    tiro_counter = 0  # Contador tiro
 
     # Player e tiros
     player = Sprite("game/nave.png")
@@ -32,18 +33,17 @@ def startgame():
             break
 
         # Tiro
-        if teclado.key_pressed("SPACE") and tiro_counter > 0.5:
+        if teclado.key_pressed("SPACE") and tiro_counter > (0.5 * dificuldade):
             tiro = Sprite("game/tiro.png")
             tiro.set_position(player.x + player.width/2, player.y - tiro.height)
             vtiro.append(tiro)
             tiro_counter = 0
 
         for i in range(len(vtiro)):
-            vtiro[i].move_y(vel_tiro * gamewindow.delta_time())
+            vtiro[i].move_y((vel_tiro * dificuldade) * gamewindow.delta_time())
             if vtiro[i].y < 0 - vtiro[i].height:
                 vtiro.pop(i)
                 break
-
 
         # Movimento player
         player.move_key_x(vel_player * gamewindow.delta_time())
